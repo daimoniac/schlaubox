@@ -101,10 +101,15 @@ npx eas build --profile preview --platform android
 npx eas build --profile preview --platform ios
 ```
 
-## Investoren-Pitch
+## Investoren-Pitch & Landing Page
 
-- Online: https://daimoniac.github.io/schlaubox/index.html
-- Lokal: `presentation/index.html`
+- **Landing:** https://daimoniac.github.io/schlaubox/
+- **Pitch:** https://daimoniac.github.io/schlaubox/pitch/
+- Lokal: `docs/index.html`, `docs/pitch/index.html`
+
+## App veröffentlichen
+
+Siehe [apps/mobile/DEPLOY.md](apps/mobile/DEPLOY.md) — EAS Build für App Store & Google Play.
 
 ## MVP-Funktionen
 
