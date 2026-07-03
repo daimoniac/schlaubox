@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.expo/
+dist/
+web-build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+apps/mobile/.env
+
+# Supabase
+supabase/.branches
+supabase/.temp
+
+# OS
+.DS_Store
+*.log
+
+# Build
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision

@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "SchlauBox",
+    "slug": "schlaubox",
+    "scheme": "schlaubox",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F7F9FC"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "io.schlaubox.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "SchlauBox benötigt die Kamera zum Scannen von Schultests.",
+        "NSPhotoLibraryUsageDescription": "SchlauBox benötigt Zugriff auf Fotos, um Schultests aus der Galerie zu importieren."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#F7F9FC"
+      },
+      "package": "io.schlaubox.app",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_MEDIA_IMAGES"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "SchlauBox benötigt Zugriff auf Fotos, um Schultests zu importieren.",
+          "cameraPermission": "SchlauBox benötigt die Kamera zum Scannen von Schultests."
+        }
+      ],
+      "expo-localization",
+      "expo-secure-store"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "00000000-0000-0000-0000-000000000000"
+      }
+    }
+  }
+}
