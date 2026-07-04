@@ -68,7 +68,7 @@ export default function AnalysisScreen() {
     );
   }
 
-  const analysis = scan.analyses;
+  const analysis = Array.isArray(scan.analyses) ? scan.analyses[0] : scan.analyses;
 
   if (scan.status === 'processing') {
     return (

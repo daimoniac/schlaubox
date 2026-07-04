@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '../../components/Button';
 import { Card, CardTitle } from '../../components/Card';
 import { useChildren, uploadAndProcessScan } from '../../lib/api';
@@ -10,9 +11,16 @@ import { strings } from '../../lib/strings';
 import { colors } from '../../theme/colors';
 
 export default function ScanScreen() {
+  const queryClient = useQueryClient();
   const { data: children } = useChildren();
   const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (children?.length && !selectedChildId) {
+      setSelectedChildId(children[0].id);
+    }
+  }, [children, selectedChildId]);
 
   const compressImage = async (uri: string) => {
     const result = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 1600 } }], {
@@ -32,9 +40,11 @@ export default function ScanScreen() {
     try {
       const compressed = await compressImage(uri);
       const scanId = await uploadAndProcessScan(selectedChildId, compressed);
+      await queryClient.invalidateQueries({ queryKey: ['scans'] });
       router.push(`/(app)/analysis/${scanId}`);
-    } catch {
-      Alert.alert(strings.errors.generic);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : strings.errors.generic;
+      Alert.alert(strings.errors.generic, message);
     } finally {
       setLoading(false);
     }

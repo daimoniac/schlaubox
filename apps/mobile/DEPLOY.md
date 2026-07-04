@@ -71,7 +71,28 @@ npm run eas:build:production
 npm run eas:submit
 ```
 
-## 6. Store-Links auf Landing Page
+## 6. Web-App hosten (schlaubox.expo.app)
+
+Die Web-Version der App (Login, Scannen, Analysen) wird separat von der Marketing-Landing-Page gehostet.
+
+```bash
+cd apps/mobile
+npm run web:deploy          # Production → https://schlaubox.expo.app
+npm run web:deploy:preview    # Preview-Deployment
+```
+
+Das Script lädt Supabase-Env-Variablen aus EAS (`production`), exportiert die Web-App nach `dist/` und deployed via EAS Hosting.
+
+Lokal testen:
+
+```bash
+npm run web                   # Dev-Server http://localhost:8081
+npm run web:export            # Statischer Export nach dist/ (nutzt lokale .env)
+```
+
+**Hinweis:** Galerie-Upload funktioniert im Browser zuverlässig; Kamera hängt vom Browser ab.
+
+## 7. Store-Links auf Landing Page
 
 Nach Veröffentlichung in [`docs/index.html`](../../docs/index.html) die URLs eintragen:
 

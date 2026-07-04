@@ -10,6 +10,16 @@ const SUBJECTS = [
   'kunst', 'musik', 'sport', 'sonstiges',
 ] as const;
 
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
@@ -72,7 +82,7 @@ Deno.serve(async (req) => {
     }
 
     const buffer = await file.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    const base64 = arrayBufferToBase64(buffer);
 
     const systemPrompt = `Du analysierst deutsche Grundschul-Arbeiten (Kinder 6-10).
 Antworte NUR mit gültigem JSON ohne Markdown.

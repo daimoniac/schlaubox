@@ -1,7 +1,17 @@
 import * as Crypto from 'expo-crypto';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Analysis, Child, Scan, ScanWithAnalysis, Subject, TopicInsight } from '@schlaubox/shared';
+import { readImageAsArrayBuffer } from './image';
 import { supabase } from './supabase';
+
+function normalizeScan(row: Record<string, unknown>): ScanWithAnalysis {
+  const rawAnalyses = row.analyses;
+  const analyses = Array.isArray(rawAnalyses)
+    ? ((rawAnalyses[0] as ScanWithAnalysis['analyses']) ?? null)
+    : ((rawAnalyses as ScanWithAnalysis['analyses']) ?? null);
+
+  return { ...(row as unknown as ScanWithAnalysis), analyses };
+}
 
 export function useChildren() {
   return useQuery({
@@ -48,7 +58,7 @@ export function useScans(childId?: string) {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data as ScanWithAnalysis[];
+      return (data ?? []).map((row) => normalizeScan(row as Record<string, unknown>));
     },
   });
 }
@@ -64,7 +74,7 @@ export function useScan(scanId: string) {
         .eq('id', scanId)
         .single();
       if (error) throw error;
-      return data as ScanWithAnalysis;
+      return normalizeScan(data as Record<string, unknown>);
     },
   });
 }
@@ -129,9 +139,7 @@ export async function uploadAndProcessScan(childId: string, imageUri: string): P
   const scanId = Crypto.randomUUID();
   const storagePath = `${userData.user.id}/${childId}/${scanId}.jpg`;
 
-  const response = await fetch(imageUri);
-  const blob = await response.blob();
-  const arrayBuffer = await blob.arrayBuffer();
+  const arrayBuffer = await readImageAsArrayBuffer(imageUri);
 
   const { error: uploadError } = await supabase.storage
     .from('scans')
@@ -152,7 +160,9 @@ export async function uploadAndProcessScan(childId: string, imageUri: string): P
     body: { scan_id: scanId },
   });
 
-  if (fnError) throw fnError;
+  if (fnError) {
+    console.warn('process-scan invoke failed:', fnError.message);
+  }
 
   return scanId;
 }

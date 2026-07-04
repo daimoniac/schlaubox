@@ -54,7 +54,7 @@ export default function HomeScreen() {
       }
       ListEmptyComponent={<Text style={styles.emptyHint}>Noch keine Tests gescannt.</Text>}
       renderItem={({ item }) => {
-        const analysis = item.analyses;
+        const analysis = Array.isArray(item.analyses) ? item.analyses[0] : item.analyses;
         const subject = analysis ? effectiveSubject(analysis) : null;
         return (
           <Pressable onPress={() => router.push(`/(app)/analysis/${item.id}`)}>
