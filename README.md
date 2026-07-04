@@ -85,6 +85,12 @@ Im [Supabase Dashboard → Authentication → URL Configuration](https://supabas
 
 Ohne diese Einstellung landen Bestätigungslinks nach der Registrierung auf einer ungültigen Adresse (z. B. `localhost.com`).
 
+**E-Mail-Versand (Bestätigung bei Registrierung):**
+
+Supabase versendet Bestätigungs-Mails über einen eingebauten Dienst mit **strengem Rate-Limit** (ca. 2–4 Mails/Stunde). Bei vielen Test-Registrierungen kommt `429 email rate limit exceeded` — dann keine Mail, obwohl die App „Konto erstellt“ anzeigen kann.
+
+Dauerhafte Lösung: [Custom SMTP](https://supabase.com/dashboard/project/zueyzjacgnnwxnzavyez/auth/smtp) im Dashboard aktivieren (z. B. SendGrid, Resend, Postmark).
+
 **Noch erforderlich — OpenAI für KI-Analyse:**
 
 Im [Supabase Dashboard → Edge Functions → Secrets](https://supabase.com/dashboard/project/zueyzjacgnnwxnzavyez/settings/functions):

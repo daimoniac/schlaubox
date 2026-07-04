@@ -45,12 +45,21 @@ export const strings = {
   deleteScan: 'Test löschen',
   deleteScanConfirm:
     'Foto und Analyse werden unwiderruflich gelöscht.',
+  registerSuccess:
+    'Wir haben Ihnen eine Bestätigungs-E-Mail gesendet. Bitte öffnen Sie den Link, bevor Sie sich anmelden.',
+  resendConfirmation: 'Bestätigungs-E-Mail erneut senden',
+  resendConfirmationSuccess:
+    'E-Mail wurde erneut gesendet. Bitte auch den Spam-Ordner prüfen.',
   errors: {
     generic: 'Etwas ist schiefgelaufen. Bitte erneut versuchen.',
     auth: 'Anmeldung fehlgeschlagen.',
     invalidCredentials: 'E-Mail oder Passwort ist falsch.',
     emailNotConfirmed:
       'Ihre E-Mail-Adresse ist noch nicht bestätigt. Bitte öffnen Sie den Link in der Aktivierungs-E-Mail und versuchen Sie es danach erneut.',
+    userAlreadyExists:
+      'Mit dieser E-Mail-Adresse gibt es bereits ein Konto. Melden Sie sich an oder fordern Sie unten eine neue Bestätigungs-E-Mail an.',
+    emailRateLimit:
+      'Zu viele E-Mails in kurzer Zeit. Bitte warten Sie einige Minuten und versuchen Sie es erneut.',
     camera: 'Kamerazugriff verweigert.',
   },
 } as const;

@@ -11,6 +11,8 @@ import type { Session, User } from '@supabase/supabase-js';
 import type { Profile } from '@schlaubox/shared';
 import { Platform } from 'react-native';
 import { getAuthRedirectUrl } from './auth-redirect';
+import { AuthFlowError } from './auth-errors';
+import { strings } from './strings';
 import { isSupabaseConfigured, supabase } from './supabase';
 
 interface AuthContextValue {
@@ -21,6 +23,7 @@ interface AuthContextValue {
   refreshProfile: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, displayName: string) => Promise<void>;
+  resendConfirmationEmail: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -85,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = useCallback(
     async (email: string, password: string, displayName: string) => {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -94,9 +97,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
       });
       if (error) throw error;
+      if (data.user && data.user.identities?.length === 0) {
+        throw new AuthFlowError('user_already_exists', strings.errors.userAlreadyExists);
+      }
     },
     [],
   );
+
+  const resendConfirmationEmail = useCallback(async (email: string) => {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: { emailRedirectTo: getAuthRedirectUrl() },
+    });
+    if (error) throw error;
+  }, []);
 
   const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut();
@@ -112,9 +127,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       refreshProfile,
       signIn,
       signUp,
+      resendConfirmationEmail,
       signOut,
     }),
-    [session, profile, loading, refreshProfile, signIn, signUp, signOut],
+    [session, profile, loading, refreshProfile, signIn, signUp, resendConfirmationEmail, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

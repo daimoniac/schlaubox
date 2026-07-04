@@ -5,6 +5,15 @@ type AuthLikeError = {
   message?: string;
 };
 
+export class AuthFlowError extends Error {
+  code: string;
+
+  constructor(code: string, message: string) {
+    super(message);
+    this.code = code;
+  }
+}
+
 export function isEmailNotConfirmedError(error: unknown): boolean {
   if (!error || typeof error !== 'object') return false;
   const { code, message } = error as AuthLikeError;
@@ -16,9 +25,28 @@ export function isEmailNotConfirmedError(error: unknown): boolean {
   );
 }
 
+export function isEmailRateLimitError(error: unknown): boolean {
+  if (!error || typeof error !== 'object') return false;
+  const { code, message } = error as AuthLikeError;
+  const normalized = message?.toLowerCase() ?? '';
+  return (
+    code === 'over_email_send_rate_limit' ||
+    normalized.includes('rate limit') ||
+    normalized.includes('too many requests')
+  );
+}
+
+export function isUserAlreadyRegisteredError(error: unknown): boolean {
+  return error instanceof AuthFlowError && error.code === 'user_already_exists';
+}
+
 export function getLoginErrorMessage(error: unknown): string {
   if (isEmailNotConfirmedError(error)) {
     return strings.errors.emailNotConfirmed;
+  }
+
+  if (isEmailRateLimitError(error)) {
+    return strings.errors.emailRateLimit;
   }
 
   if (error && typeof error === 'object') {
@@ -29,4 +57,16 @@ export function getLoginErrorMessage(error: unknown): string {
   }
 
   return strings.errors.auth;
+}
+
+export function getRegisterErrorMessage(error: unknown): string {
+  if (isUserAlreadyRegisteredError(error)) {
+    return strings.errors.userAlreadyExists;
+  }
+
+  if (isEmailRateLimitError(error)) {
+    return strings.errors.emailRateLimit;
+  }
+
+  return strings.errors.generic;
 }
