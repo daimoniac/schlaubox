@@ -5,6 +5,9 @@
     "apps/*",
     "packages/*"
   ],
+  "overrides": {
+    "uuid": "11.1.1"
+  },
   "scripts": {
     "mobile": "npm run start --workspace=apps/mobile",
     "mobile:android": "npm run android --workspace=apps/mobile",

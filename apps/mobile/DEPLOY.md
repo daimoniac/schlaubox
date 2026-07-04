@@ -15,7 +15,31 @@ eas login
 eas init               # verknüpft Projekt, schreibt projectId in app.json
 ```
 
-## 2. Preview-Build zum Testen
+## 2. Umgebungsvariablen für EAS (einmalig)
+
+Lokale Entwicklung nutzt `apps/mobile/.env` (nicht in Git). **EAS-Builds** brauchen dieselben Werte — sonst stürzt die App beim Start ab.
+
+```bash
+cd apps/mobile
+
+# Anon-Key auf Expo hinterlegen (Wert aus .env oder Supabase Dashboard)
+eas env:create \
+  --name EXPO_PUBLIC_SUPABASE_ANON_KEY \
+  --value "DEIN_ANON_KEY" \
+  --environment preview \
+  --environment production \
+  --visibility plaintext
+
+# URL steht bereits in eas.json; alternativ auch per eas env:create setzen
+```
+
+Prüfen:
+
+```bash
+eas env:list --environment preview
+```
+
+## 3. Preview-Build zum Testen
 
 ```bash
 npm run eas:build:android   # APK-Download-Link per E-Mail
@@ -30,13 +54,13 @@ npm run eas:build:preview
 
 Build-Status: https://expo.dev/accounts/[dein-account]/projects/schlaubox/builds
 
-## 3. Production-Build für Stores
+## 4. Production-Build für Stores
 
 ```bash
 npm run eas:build:production
 ```
 
-## 4. In Stores einreichen
+## 5. In Stores einreichen
 
 `eas.json` → `submit.production` anpassen:
 
@@ -47,7 +71,7 @@ npm run eas:build:production
 npm run eas:submit
 ```
 
-## 5. Store-Links auf Landing Page
+## 6. Store-Links auf Landing Page
 
 Nach Veröffentlichung in [`docs/index.html`](../../docs/index.html) die URLs eintragen:
 

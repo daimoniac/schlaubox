@@ -17,7 +17,8 @@
       "bundleIdentifier": "io.schlaubox.app",
       "infoPlist": {
         "NSCameraUsageDescription": "SchlauBox benötigt die Kamera zum Scannen von Schultests.",
-        "NSPhotoLibraryUsageDescription": "SchlauBox benötigt Zugriff auf Fotos, um Schultests aus der Galerie zu importieren."
+        "NSPhotoLibraryUsageDescription": "SchlauBox benötigt Zugriff auf Fotos, um Schultests aus der Galerie zu importieren.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -28,7 +29,8 @@
       "package": "io.schlaubox.app",
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.READ_MEDIA_IMAGES"
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "plugins": [
@@ -41,12 +43,21 @@
         }
       ],
       "expo-localization",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-sharing"
     ],
     "extra": {
       "eas": {
-        "projectId": "00000000-0000-0000-0000-000000000000"
-      }
+        "projectId": "dcc4b3e7-7372-4232-8966-5c9cda81e336"
+      },
+      "router": {}
+    },
+    "owner": "steveknott",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/dcc4b3e7-7372-4232-8966-5c9cda81e336"
     }
   }
 }

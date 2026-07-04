@@ -9,7 +9,7 @@ import {
 } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import type { Profile } from '@schlaubox/shared';
-import { supabase } from './supabase';
+import { isSupabaseConfigured, supabase } from './supabase';
 
 interface AuthContextValue {
   session: Session | null;
@@ -48,6 +48,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [session?.user?.id]);
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setLoading(false);
+      return;
+    }
+
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setLoading(false);

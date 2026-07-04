@@ -1,10 +1,16 @@
 import { Redirect } from 'expo-router';
 import { ActivityIndicator, View } from 'react-native';
+import { ConfigError } from '../components/ConfigError';
 import { useAuth } from '../lib/auth';
+import { isSupabaseConfigured } from '../lib/supabase';
 import { colors } from '../theme/colors';
 
 export default function Index() {
   const { session, profile, loading } = useAuth();
+
+  if (!isSupabaseConfigured) {
+    return <ConfigError />;
+  }
 
   if (loading) {
     return (
