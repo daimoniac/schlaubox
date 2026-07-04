@@ -87,9 +87,22 @@ Ohne diese Einstellung landen Bestätigungslinks nach der Registrierung auf eine
 
 **E-Mail-Versand (Bestätigung bei Registrierung):**
 
-Supabase versendet Bestätigungs-Mails über einen eingebauten Dienst mit **strengem Rate-Limit** (ca. 2–4 Mails/Stunde). Bei vielen Test-Registrierungen kommt `429 email rate limit exceeded` — dann keine Mail, obwohl die App „Konto erstellt“ anzeigen kann.
+Supabase versendet Bestätigungs-Mails über einen eingebauten Dienst mit **festem Limit von 2 E-Mails pro Stunde** — das lässt sich **nicht** per Code oder MCP erhöhen. Jeder Registrierungs- oder „Erneut senden“-Klick zählt mit, auch wenn die Mail nicht ankommt.
 
-Dauerhafte Lösung: [Custom SMTP](https://supabase.com/dashboard/project/zueyzjacgnnwxnzavyez/auth/smtp) im Dashboard aktivieren (z. B. SendGrid, Resend, Postmark).
+**Schnelllösung für Tests** — E-Mail-Bestätigung vorübergehend aus:
+
+[Authentication → Providers → Email](https://supabase.com/dashboard/project/zueyzjacgnnwxnzavyez/auth/providers?provider=Email) → **Confirm email** deaktivieren. Dann ist nach der Registrierung sofort Login möglich (ohne Aktivierungs-Mail).
+
+**Dauerhafte Lösung** — Custom SMTP (z. B. [Resend](https://resend.com), kostenlos bis 100 Mails/Tag):
+
+1. [Resend](https://resend.com) → API Key erstellen
+2. [Supabase → Authentication → SMTP](https://supabase.com/dashboard/project/zueyzjacgnnwxnzavyez/auth/smtp) → Enable Custom SMTP:
+   - Host: `smtp.resend.com`
+   - Port: `465`
+   - User: `resend`
+   - Password: `<Resend API Key>`
+   - Sender: `onboarding@resend.dev` (Test) oder eigene Domain
+3. Danach unter [Rate Limits](https://supabase.com/dashboard/project/zueyzjacgnnwxnzavyez/auth/rate-limits) **Email sent** auf z. B. 30 erhöhen
 
 **Noch erforderlich — OpenAI für KI-Analyse:**
 

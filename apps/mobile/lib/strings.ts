@@ -59,7 +59,10 @@ export const strings = {
     userAlreadyExists:
       'Mit dieser E-Mail-Adresse gibt es bereits ein Konto. Melden Sie sich an oder fordern Sie unten eine neue Bestätigungs-E-Mail an.',
     emailRateLimit:
-      'Zu viele E-Mails in kurzer Zeit. Bitte warten Sie einige Minuten und versuchen Sie es erneut.',
+      'Supabase erlaubt nur 2 Bestätigungs-E-Mails pro Stunde (Standard-Dienst). ' +
+      'Bitte 60 Minuten gar nicht erneut versuchen — jeder Klick zählt mit. ' +
+      'Dauerhaft lösen: Custom SMTP im Supabase-Dashboard einrichten, ' +
+      'oder für Tests die E-Mail-Bestätigung vorübergehend deaktivieren.',
     camera: 'Kamerazugriff verweigert.',
   },
 } as const;
