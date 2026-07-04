@@ -75,6 +75,20 @@ npm run eas:submit
 
 Die Web-Version der App (Login, Scannen, Analysen) wird separat von der Marketing-Landing-Page gehostet.
 
+### Continuous Deployment (GitHub Actions)
+
+Bei jedem Push auf `main` (Änderungen an `apps/mobile/` oder `packages/`) deployed automatisch:
+
+`.github/workflows/deploy-web-prod.yml` → https://schlaubox.expo.app
+
+**Einmalig einrichten:** [Expo Access Token](https://expo.dev/accounts/[account]/settings/access-tokens) erstellen und als GitHub Repository Secret `EXPO_TOKEN` hinterlegen:
+
+`GitHub → Repository → Settings → Secrets and variables → Actions → New repository secret`
+
+Manuell auslösen: **Actions → Deploy Web to Production → Run workflow**
+
+### Manuell deployen
+
 ```bash
 cd apps/mobile
 npm run web:deploy          # Production → https://schlaubox.expo.app

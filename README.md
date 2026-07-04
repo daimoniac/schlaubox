@@ -139,7 +139,7 @@ npx eas build --profile preview --platform ios
 
 ## App veröffentlichen
 
-Siehe [apps/mobile/DEPLOY.md](apps/mobile/DEPLOY.md) — EAS Build für App Store & Google Play.
+Siehe [apps/mobile/DEPLOY.md](apps/mobile/DEPLOY.md) — EAS Build für App Store & Google Play, GitHub Actions für Web-CD nach `main`.
 
 ## MVP-Funktionen
 
