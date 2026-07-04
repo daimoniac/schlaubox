@@ -19,6 +19,7 @@ import {
   effectiveSubject,
   getSignedScanUrl,
   groupInsights,
+  useDeleteScan,
   useOverrideSubject,
   useScan,
 } from '../../../lib/api';
@@ -30,8 +31,29 @@ export default function AnalysisScreen() {
   const { scanId } = useLocalSearchParams<{ scanId: string }>();
   const { data: scan, isLoading, refetch } = useScan(scanId);
   const overrideSubject = useOverrideSubject();
+  const deleteScan = useDeleteScan();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [showSubjectPicker, setShowSubjectPicker] = useState(false);
+
+  const onDelete = () => {
+    if (!scan) return;
+
+    Alert.alert(strings.deleteScan, strings.deleteScanConfirm, [
+      { text: strings.cancel, style: 'cancel' },
+      {
+        text: strings.deleteScan,
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteScan.mutateAsync(scan);
+            router.back();
+          } catch {
+            Alert.alert(strings.errors.generic);
+          }
+        },
+      },
+    ]);
+  };
 
   useEffect(() => {
     if (!scan) return;
@@ -75,6 +97,12 @@ export default function AnalysisScreen() {
       <View style={styles.center}>
         <ActivityIndicator color={colors.primary} size="large" />
         <Text style={styles.processing}>{strings.processing}</Text>
+        <Button
+          title={strings.deleteScan}
+          variant="danger"
+          loading={deleteScan.isPending}
+          onPress={onDelete}
+        />
       </View>
     );
   }
@@ -84,6 +112,12 @@ export default function AnalysisScreen() {
       <View style={styles.center}>
         <Text style={styles.failed}>{scan.error_message ?? strings.scanFailed}</Text>
         <Button title={strings.retry} onPress={() => router.back()} />
+        <Button
+          title={strings.deleteScan}
+          variant="danger"
+          loading={deleteScan.isPending}
+          onPress={onDelete}
+        />
       </View>
     );
   }
@@ -140,6 +174,13 @@ export default function AnalysisScreen() {
           ))}
         </View>
       )}
+
+      <Button
+        title={strings.deleteScan}
+        variant="danger"
+        loading={deleteScan.isPending}
+        onPress={onDelete}
+      />
 
       <Modal visible={showSubjectPicker} transparent animationType="slide">
         <View style={styles.modalBackdrop}>

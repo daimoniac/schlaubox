@@ -42,9 +42,15 @@ export const strings = {
   privacy: 'Datenschutzerklärung',
   recentScans: 'Letzte Tests',
   selectChild: 'Kind auswählen',
+  deleteScan: 'Test löschen',
+  deleteScanConfirm:
+    'Foto und Analyse werden unwiderruflich gelöscht.',
   errors: {
     generic: 'Etwas ist schiefgelaufen. Bitte erneut versuchen.',
     auth: 'Anmeldung fehlgeschlagen.',
+    invalidCredentials: 'E-Mail oder Passwort ist falsch.',
+    emailNotConfirmed:
+      'Ihre E-Mail-Adresse ist noch nicht bestätigt. Bitte öffnen Sie den Link in der Aktivierungs-E-Mail und versuchen Sie es danach erneut.',
     camera: 'Kamerazugriff verweigert.',
   },
 } as const;

@@ -115,6 +115,27 @@ export function useAcceptConsent() {
   });
 }
 
+export function useDeleteScan() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (scan: Pick<Scan, 'id' | 'storage_path' | 'child_id'>) => {
+      const { error: storageError } = await supabase.storage
+        .from('scans')
+        .remove([scan.storage_path]);
+      if (storageError) {
+        console.warn('scan storage delete failed:', storageError.message);
+      }
+
+      const { error } = await supabase.from('scans').delete().eq('id', scan.id);
+      if (error) throw error;
+    },
+    onSuccess: (_data, scan) => {
+      queryClient.invalidateQueries({ queryKey: ['scans'] });
+      queryClient.removeQueries({ queryKey: ['scans', 'detail', scan.id] });
+    },
+  });
+}
+
 export function useOverrideSubject() {
   const queryClient = useQueryClient();
   return useMutation({
