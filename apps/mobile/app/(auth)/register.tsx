@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../lib/auth';
@@ -24,8 +24,10 @@ export default function RegisterScreen() {
     setLoading(true);
     try {
       await signUp(email.trim(), password, displayName.trim());
-      Alert.alert(strings.register, strings.registerSuccess);
-      router.replace('/(auth)/login');
+      router.replace({
+        pathname: '/(auth)/login',
+        params: { registered: '1', email: email.trim() },
+      });
     } catch (err) {
       setLastError(err);
       setError(getRegisterErrorMessage(err));

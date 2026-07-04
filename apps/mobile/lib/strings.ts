@@ -45,8 +45,10 @@ export const strings = {
   deleteScan: 'Test löschen',
   deleteScanConfirm:
     'Foto und Analyse werden unwiderruflich gelöscht.',
+  registerSuccessTitle: 'Konto erstellt',
   registerSuccess:
-    'Wir haben Ihnen eine Bestätigungs-E-Mail gesendet. Bitte öffnen Sie den Link, bevor Sie sich anmelden.',
+    'Bitte prüfen Sie jetzt Ihr E-Mail-Postfach und aktivieren Sie Ihr Konto über den Link in der Aktivierungs-E-Mail. ' +
+    'Erst danach können Sie sich anmelden. Schauen Sie auch im Spam-Ordner nach.',
   resendConfirmation: 'Bestätigungs-E-Mail erneut senden',
   resendConfirmationSuccess:
     'E-Mail wurde erneut gesendet. Bitte auch den Spam-Ordner prüfen.',

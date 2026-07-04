@@ -1,5 +1,5 @@
-import { Link, router } from 'expo-router';
-import { useState } from 'react';
+import { Link, router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
@@ -9,6 +9,10 @@ import { strings } from '../../lib/strings';
 import { colors } from '../../theme/colors';
 
 export default function LoginScreen() {
+  const { registered, email: registeredEmail } = useLocalSearchParams<{
+    registered?: string;
+    email?: string;
+  }>();
   const { signIn, resendConfirmationEmail } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,6 +20,13 @@ export default function LoginScreen() {
   const [resendLoading, setResendLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastError, setLastError] = useState<unknown>(null);
+  const showActivationHint = registered === '1';
+
+  useEffect(() => {
+    if (typeof registeredEmail === 'string' && registeredEmail.length > 0) {
+      setEmail(registeredEmail);
+    }
+  }, [registeredEmail]);
 
   const onSubmit = async () => {
     setError(null);
@@ -58,6 +69,12 @@ export default function LoginScreen() {
       <Text style={styles.brand}>{strings.appName}</Text>
       <Text style={styles.tagline}>{strings.tagline}</Text>
       <View style={styles.form}>
+        {showActivationHint && (
+          <View style={styles.successBox} accessibilityRole="alert">
+            <Text style={styles.successTitle}>{strings.registerSuccessTitle}</Text>
+            <Text style={styles.successText}>{strings.registerSuccess}</Text>
+          </View>
+        )}
         {error && (
           <View style={styles.errorBox} accessibilityRole="alert">
             <Text style={styles.errorText}>{error}</Text>
@@ -66,7 +83,7 @@ export default function LoginScreen() {
         <Input label={strings.email} value={email} onChangeText={setEmail} keyboardType="email-address" />
         <Input label={strings.password} value={password} onChangeText={setPassword} secureTextEntry />
         <Button title={strings.login} onPress={onSubmit} loading={loading} />
-        {lastError && isEmailNotConfirmedError(lastError) && (
+        {(showActivationHint || (lastError && isEmailNotConfirmedError(lastError))) && (
           <Button
             title={strings.resendConfirmation}
             variant="secondary"
@@ -87,6 +104,16 @@ const styles = StyleSheet.create({
   brand: { fontSize: 32, fontWeight: '800', color: colors.navy, textAlign: 'center' },
   tagline: { fontSize: 16, color: colors.accent, textAlign: 'center', marginBottom: 24 },
   form: { gap: 14 },
+  successBox: {
+    backgroundColor: colors.accentSoft,
+    borderWidth: 1,
+    borderColor: colors.accent,
+    borderRadius: 12,
+    padding: 14,
+    gap: 6,
+  },
+  successTitle: { color: colors.navy, fontSize: 16, fontWeight: '700' },
+  successText: { color: colors.text, fontSize: 15, lineHeight: 22 },
   errorBox: {
     backgroundColor: '#FFEBEE',
     borderWidth: 1,
