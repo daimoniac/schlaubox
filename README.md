@@ -74,6 +74,17 @@ Bereits eingerichtet:
 - Edge Functions: `process-scan`, `delete-account`, `export-data`
 - Mobile `.env` unter `apps/mobile/.env`
 
+**Noch erforderlich — Auth-URLs (E-Mail-Bestätigung / Safari):**
+
+Im [Supabase Dashboard → Authentication → URL Configuration](https://supabase.com/dashboard/project/zueyzjacgnnwxnzavyez/auth/url-configuration):
+
+| Feld | Wert |
+|------|------|
+| Site URL | `https://schlaubox.expo.app` |
+| Redirect URLs | `https://schlaubox.expo.app` |
+
+Ohne diese Einstellung landen Bestätigungslinks nach der Registrierung auf einer ungültigen Adresse (z. B. `localhost.com`).
+
 **Noch erforderlich — OpenAI für KI-Analyse:**
 
 Im [Supabase Dashboard → Edge Functions → Secrets](https://supabase.com/dashboard/project/zueyzjacgnnwxnzavyez/settings/functions):

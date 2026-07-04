@@ -9,6 +9,8 @@ import {
 } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import type { Profile } from '@schlaubox/shared';
+import { Platform } from 'react-native';
+import { getAuthRedirectUrl } from './auth-redirect';
 import { isSupabaseConfigured, supabase } from './supabase';
 
 interface AuthContextValue {
@@ -56,6 +58,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setLoading(false);
+      if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => {
@@ -83,7 +88,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { display_name: displayName } },
+        options: {
+          data: { display_name: displayName },
+          emailRedirectTo: getAuthRedirectUrl(),
+        },
       });
       if (error) throw error;
     },
