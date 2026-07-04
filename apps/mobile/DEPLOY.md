@@ -81,9 +81,14 @@ Bei jedem Push auf `main` (Änderungen an `apps/mobile/` oder `packages/`) deplo
 
 `.github/workflows/deploy-web-prod.yml` → https://schlaubox.expo.app
 
-**Einmalig einrichten:** [Expo Access Token](https://expo.dev/accounts/steveknott/settings/access-tokens) erstellen und als GitHub Repository Secret `EXPO_TOKEN` hinterlegen:
+**Einmalig einrichten** — GitHub Repository Secrets:
 
-`GitHub → Repository → Settings → Secrets and variables → Actions → New repository secret`
+| Secret | Wert |
+|--------|------|
+| `EXPO_TOKEN` | [Expo Access Token](https://expo.dev/accounts/steveknott/settings/access-tokens) |
+| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | Anon Key aus Supabase Dashboard |
+
+`EXPO_PUBLIC_SUPABASE_URL` ist im Workflow fest verdrahtet.
 
 Manuell auslösen: **Actions → Deploy Web to Production → Run workflow**
 
