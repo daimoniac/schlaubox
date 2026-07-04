@@ -81,7 +81,7 @@ Bei jedem Push auf `main` (Änderungen an `apps/mobile/` oder `packages/`) deplo
 
 `.github/workflows/deploy-web-prod.yml` → https://schlaubox.expo.app
 
-**Einmalig einrichten:** [Expo Access Token](https://expo.dev/accounts/[account]/settings/access-tokens) erstellen und als GitHub Repository Secret `EXPO_TOKEN` hinterlegen:
+**Einmalig einrichten:** [Expo Access Token](https://expo.dev/accounts/steveknott/settings/access-tokens) erstellen und als GitHub Repository Secret `EXPO_TOKEN` hinterlegen:
 
 `GitHub → Repository → Settings → Secrets and variables → Actions → New repository secret`
 
